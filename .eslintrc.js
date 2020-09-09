@@ -14,6 +14,13 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error',
     'comma-dangle': ['error', 'only-multiline'],
-    'space-before-function-paren': ['error', 'never'],
+    'space-before-function-paren': [
+      'error',
+      {
+        anonymous: 'always',
+        named: 'never',
+        asyncArrow: 'always',
+      },
+    ],
   },
 }
