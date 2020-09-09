@@ -19,9 +19,14 @@ export interface ITokenGenerator {
   generate: (value: string) => Promise<string>
 }
 
+export interface IUpdateUserAccessTokenRepository {
+  update: (userId: string, token: string) => Promise<void>
+}
+
 class AuthUseCase {
   constructor(
     private loadUserByEmailRepository: ILoadUserByEmailRepository,
+    private updateUserAccessTokenRepository: IUpdateUserAccessTokenRepository,
     private encrypter: IEncrypter,
     private tokenGenerator: ITokenGenerator
   ) {}
@@ -43,6 +48,7 @@ class AuthUseCase {
     }
 
     const accessToken = await this.tokenGenerator.generate(user.id)
+    this.updateUserAccessTokenRepository.update(user.id, accessToken)
 
     return accessToken
   }
