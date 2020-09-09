@@ -21,7 +21,11 @@ const makeLoadUserByEmailRepositorySpy = () => {
 const makeEncrypterSpy = () => {
   class EncrypterSpy {
     isValid = true
+    value = ''
+    hashedValue = ''
     async compare(value, hashedValue): Promise<boolean> {
+      this.value = value
+      this.hashedValue = hashedValue
       return this.isValid
     }
   }
@@ -69,10 +73,13 @@ describe('Auth Use Case', () => {
     expect(accessToken).toBeFalsy()
   })
 
-  test('Should return an access token if correct params are provided', async () => {
-    const { sut, encrypterSpy } = makeSut()
-    encrypterSpy.isValid = false
-    const accessToken = await sut.auth('any@email.com', 'invalid_password')
-    expect(accessToken).toBeFalsy()
+  test('Should call encrypter with correct params', async () => {
+    const { sut, loadUserByEmailRepositorySpy, encrypterSpy } = makeSut()
+    await sut.auth('valid@email.com', 'valid_password')
+
+    expect(encrypterSpy.hashedValue).toBe(
+      loadUserByEmailRepositorySpy.user.password
+    )
+    expect(encrypterSpy.value).toBe('valid_password')
   })
 })
