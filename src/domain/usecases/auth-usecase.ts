@@ -1,8 +1,13 @@
 import MissingParamError from '@/utils/errors/missing-param-error'
 
+export interface IUser {
+  id: string
+  email: string
+  password: string
+}
 export interface ILoadUserByEmailRepository {
   email: string
-  load: (email: string) => Promise<any>
+  load: (email: string) => Promise<IUser>
 }
 
 export interface IEncrypter {
@@ -10,10 +15,15 @@ export interface IEncrypter {
   compare: (value: string, hashedValue: string) => Promise<boolean>
 }
 
+export interface ITokenGenerator {
+  generate: (value: string) => Promise<string>
+}
+
 class AuthUseCase {
   constructor(
     private loadUserByEmailRepository: ILoadUserByEmailRepository,
-    private encrypter: IEncrypter
+    private encrypter: IEncrypter,
+    private tokenGenerator: ITokenGenerator
   ) {}
 
   async auth(email, password): Promise<string> {
@@ -32,7 +42,9 @@ class AuthUseCase {
       return null
     }
 
-    return user
+    const accessToken = await this.tokenGenerator.generate(user.id)
+
+    return accessToken
   }
 }
 
