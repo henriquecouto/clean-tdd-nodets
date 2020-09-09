@@ -36,6 +36,7 @@ const makeEncrypterSpy = () => {
 const makeTokenGeneratorSpy = () => {
   class TokenGeneratorSpy {
     value = ''
+    token = 'access_token'
     async generate(value: string) {
       this.value = value
       return 'access_token'
@@ -100,19 +101,15 @@ describe('Auth Use Case', () => {
     expect(encrypterSpy.value).toBe('valid_password')
   })
 
-  test('Should call encrypter with correct params', async () => {
-    const { sut, loadUserByEmailRepositorySpy, encrypterSpy } = makeSut()
-    await sut.auth('valid@email.com', 'valid_password')
-
-    expect(encrypterSpy.hashedValue).toBe(
-      loadUserByEmailRepositorySpy.user.password
-    )
-    expect(encrypterSpy.value).toBe('valid_password')
-  })
-
   test('Should call token generator with correct user id', async () => {
     const { sut, tokenGenerator, loadUserByEmailRepositorySpy } = makeSut()
     await sut.auth('valid@email.com', 'valid_password')
     expect(tokenGenerator.value).toBe(loadUserByEmailRepositorySpy.user.id)
+  })
+
+  test('Should return an access token if correct credentials are provided', async () => {
+    const { sut, tokenGenerator } = makeSut()
+    const accessToken = await sut.auth('valid@email.com', 'valid_password')
+    expect(accessToken).toBe(tokenGenerator.token)
   })
 })
