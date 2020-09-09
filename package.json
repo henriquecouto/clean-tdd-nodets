@@ -9,8 +9,8 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "yarn lint --fix",
     "test": "jest --silent --noStackTrace --runInBand",
-    "test:unit": "yarn test --watch -c jest-unit.config.ts",
-    "test:integration": "yarn test --watch -c jest-integration.config.ts",
+    "test:unit": "yarn test --watch --passWithNoTests -c jest.config.js",
+    "test:integration": "yarn test --watch --passWithNoTests -c jest-integration.config.js",
     "test:staged": "yarn test --findRelatedTests",
     "test:ci": "yarn test --coverage"
   },
