@@ -1,5 +1,8 @@
 import MissingParamError from '@/utils/errors/missing-param-error'
-import AuthUseCase, { ILoadUserByEmailRepository } from './auth-usecase'
+import AuthUseCase, {
+  ILoadUserByEmailRepository,
+  IEncrypter,
+} from './auth-usecase'
 
 const makeLoadUserByEmailRepositorySpy = () => {
   class LoadUserByEmailRepositorySpy implements ILoadUserByEmailRepository {
@@ -18,10 +21,22 @@ const makeLoadUserByEmailRepositorySpy = () => {
   return new LoadUserByEmailRepositorySpy()
 }
 
+const makeEncrypterSpy = () => {
+  class EncrypterSpy implements IEncrypter {
+    isValid = true
+    async compare(value, hashedValue): Promise<boolean> {
+      return this.isValid
+    }
+  }
+
+  return new EncrypterSpy()
+}
+
 const makeSut = () => {
   const loadUserByEmailRepositorySpy = makeLoadUserByEmailRepositorySpy()
-  const sut = new AuthUseCase(loadUserByEmailRepositorySpy)
-  return { sut, loadUserByEmailRepositorySpy }
+  const encrypterSpy = makeEncrypterSpy()
+  const sut = new AuthUseCase(loadUserByEmailRepositorySpy, encrypterSpy)
+  return { sut, loadUserByEmailRepositorySpy, encrypterSpy }
 }
 
 describe('Auth Use Case', () => {
@@ -48,5 +63,12 @@ describe('Auth Use Case', () => {
     loadUserByEmailRepositorySpy.user = null
     const accessToken = await sut.auth('any@email.com', 'any_password')
     expect(accessToken).toBeNull()
+  })
+
+  test('Should return null if an invalid password is provided', async () => {
+    const { sut, encrypterSpy } = makeSut()
+    encrypterSpy.isValid = false
+    const accessToken = await sut.auth('any@email.com', 'invalid_password')
+    expect(accessToken).toBeFalsy()
   })
 })

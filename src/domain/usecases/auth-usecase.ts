@@ -5,6 +5,11 @@ export interface ILoadUserByEmailRepository {
   load: (email: string) => Promise<any>
 }
 
+export interface IEncrypter {
+  isValid: boolean
+  compare: (value: string, hashedValue: string) => Promise<boolean>
+}
+
 export interface IAuthUseCase {
   loadUserByEmailRepository: ILoadUserByEmailRepository
   auth: (email: string, password: string) => Promise<string>
@@ -12,9 +17,14 @@ export interface IAuthUseCase {
 
 class AuthUseCase implements IAuthUseCase {
   loadUserByEmailRepository
+  encrypter
 
-  constructor(loadUserByEmailRepository: ILoadUserByEmailRepository) {
+  constructor(
+    loadUserByEmailRepository: ILoadUserByEmailRepository,
+    encrypter: IEncrypter
+  ) {
     this.loadUserByEmailRepository = loadUserByEmailRepository
+    this.encrypter = encrypter
   }
 
   async auth(email, password): Promise<string> {
@@ -26,8 +36,10 @@ class AuthUseCase implements IAuthUseCase {
     }
 
     const user = await this.loadUserByEmailRepository.load(email)
+    const isValid =
+      user && (await this.encrypter.compare(password, user.password))
 
-    if (!user) {
+    if (!isValid) {
       return null
     }
 
