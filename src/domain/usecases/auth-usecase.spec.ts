@@ -1,9 +1,4 @@
-class MissingParamError extends Error {
-  constructor(message) {
-    super(message)
-    this.name = 'MissingParamError'
-  }
-}
+import MissingParamError from '@/utils/errors/missing-param-error'
 
 class AuthUseCase {
   async auth(email: string, password: string) {
