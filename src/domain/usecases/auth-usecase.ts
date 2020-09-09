@@ -25,9 +25,13 @@ class AuthUseCase implements IAuthUseCase {
       throw new MissingParamError('password')
     }
 
-    await this.loadUserByEmailRepository.load(email)
+    const user = await this.loadUserByEmailRepository.load(email)
 
-    return ''
+    if (!user) {
+      return null
+    }
+
+    return user
   }
 }
 
