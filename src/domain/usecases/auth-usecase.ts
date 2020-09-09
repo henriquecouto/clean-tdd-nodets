@@ -10,22 +10,11 @@ export interface IEncrypter {
   compare: (value: string, hashedValue: string) => Promise<boolean>
 }
 
-export interface IAuthUseCase {
-  loadUserByEmailRepository: ILoadUserByEmailRepository
-  auth: (email: string, password: string) => Promise<string>
-}
-
-class AuthUseCase implements IAuthUseCase {
-  loadUserByEmailRepository
-  encrypter
-
+class AuthUseCase {
   constructor(
-    loadUserByEmailRepository: ILoadUserByEmailRepository,
-    encrypter: IEncrypter
-  ) {
-    this.loadUserByEmailRepository = loadUserByEmailRepository
-    this.encrypter = encrypter
-  }
+    private loadUserByEmailRepository: ILoadUserByEmailRepository,
+    private encrypter: IEncrypter
+  ) {}
 
   async auth(email, password): Promise<string> {
     if (!email) {
