@@ -1,15 +1,5 @@
 import MissingParamError from '@/utils/errors/missing-param-error'
-
-class AuthUseCase {
-  async auth(email: string, password: string) {
-    if (!email) {
-      throw new MissingParamError('email')
-    }
-    if (!password) {
-      throw new MissingParamError('password')
-    }
-  }
-}
+import AuthUseCase from './auth-usecase'
 
 describe('Auth Use Case', () => {
   test('Should throw if no email is provided', () => {
