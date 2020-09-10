@@ -1,4 +1,4 @@
-import MissingParamError from '@/utils/errors/missing-param-error'
+import MissingParamError from '@/utils/errors/MissingParamError'
 import AuthUseCase from './AuthUseCase'
 
 const makeLoadUserByEmailRepositorySpy = () => {
