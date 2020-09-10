@@ -1,13 +1,9 @@
 import MissingParamError from '@/utils/errors/MissingParamError'
+import User from '../entities/User'
 
-export interface IUser {
-  id: string
-  email: string
-  password: string
-}
 export interface ILoadUserByEmailRepository {
   email: string
-  load: (email: string) => Promise<IUser>
+  load: (email: string) => Promise<User>
 }
 
 export interface IEncrypter {
