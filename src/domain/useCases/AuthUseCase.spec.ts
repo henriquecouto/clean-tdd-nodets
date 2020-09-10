@@ -1,5 +1,5 @@
 import MissingParamError from '@/utils/errors/missing-param-error'
-import AuthUseCase from './auth-usecase'
+import AuthUseCase from './AuthUseCase'
 
 const makeLoadUserByEmailRepositorySpy = () => {
   class LoadUserByEmailRepositorySpy {
