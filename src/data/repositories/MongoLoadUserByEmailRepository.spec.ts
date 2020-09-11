@@ -1,28 +1,13 @@
-import ILoadUserByEmailRepository from '@/domain/definitions/ILoadUserByEmailRepository'
-import User from '@/domain/entities/User'
 import MissingParamError from '@/utils/errors/MissingParamError'
+import MongoLoadUserByEmailRepository from './MongoLoadUserByEmailRepository'
 
 import { Collection, MongoClient } from 'mongodb'
 
 let connection: MongoClient
 let userModel: Collection
 
-class MongoLoadUserByEmailRepository implements ILoadUserByEmailRepository {
-  async load(email): Promise<User> {
-    if (!email) {
-      throw new MissingParamError('email')
-    }
-    const user = await userModel.findOne({ email })
-    if (user) {
-      return new User(user, user.id)
-    }
-
-    return null
-  }
-}
-
 const makeSut = () => {
-  const sut = new MongoLoadUserByEmailRepository()
+  const sut = new MongoLoadUserByEmailRepository(userModel)
   return { sut }
 }
 
