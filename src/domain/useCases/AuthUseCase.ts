@@ -1,23 +1,8 @@
 import MissingParamError from '@/utils/errors/MissingParamError'
-import User from '../entities/User'
-
-export interface ILoadUserByEmailRepository {
-  email: string
-  load: (email: string) => Promise<User>
-}
-
-export interface IEncrypter {
-  isValid: boolean
-  compare: (value: string, hashedValue: string) => Promise<boolean>
-}
-
-export interface ITokenGenerator {
-  generate: (value: string) => Promise<string>
-}
-
-export interface IUpdateUserAccessTokenRepository {
-  update: (userId: string, token: string) => Promise<void>
-}
+import ILoadUserByEmailRepository from '../definitions/ILoadUserByEmailRepository'
+import IUpdateUserAccessTokenRepository from '../definitions/IUpdateUserAccessTokenRepository'
+import IEncrypter from '../definitions/IEncrypter'
+import ITokenGenerator from '../definitions/ITokenGenerator'
 
 class AuthUseCase {
   constructor(
