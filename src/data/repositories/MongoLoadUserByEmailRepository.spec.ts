@@ -2,19 +2,19 @@ import ILoadUserByEmailRepository from '@/domain/definitions/ILoadUserByEmailRep
 import User from '@/domain/entities/User'
 import MissingParamError from '@/utils/errors/MissingParamError'
 
-import { Db, MongoClient } from 'mongodb'
+import { Collection, MongoClient } from 'mongodb'
 
 let connection: MongoClient
-let db: Db
+let userModel: Collection
 
 class MongoLoadUserByEmailRepository implements ILoadUserByEmailRepository {
   async load(email): Promise<User> {
     if (!email) {
       throw new MissingParamError('email')
     }
-    const user = await db.collection('users').findOne({ email })
+    const user = await userModel.findOne({ email })
     if (user) {
-      return new User(user)
+      return new User(user, user.id)
     }
 
     return null
@@ -32,7 +32,7 @@ describe('MongoLoadUserByEmailRepository', () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
-    db = await connection.db()
+    userModel = await connection.db().collection('users')
   })
 
   afterAll(async () => {
@@ -49,5 +49,18 @@ describe('MongoLoadUserByEmailRepository', () => {
     const { sut } = makeSut()
     const promise = sut.load(null)
     expect(promise).rejects.toThrow(new MissingParamError('email'))
+  })
+
+  test('Should return user if a user is finded', async () => {
+    const { sut } = makeSut()
+    const mockUser = {
+      email: 'any@email.com',
+      password: 'any_password',
+      id: 'any_id',
+    }
+    await userModel.insertOne(mockUser)
+
+    const user = await sut.load(mockUser.email)
+    expect(user).toEqual(mockUser)
   })
 })
