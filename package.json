@@ -8,11 +8,11 @@
   "scripts": {
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "yarn lint --fix",
-    "test": "jest --silent --noStackTrace --runInBand",
+    "test": "jest --noStackTrace --runInBand",
     "test:unit": "yarn test --watch --passWithNoTests -c jest.config.js",
     "test:integration": "yarn test --watch --passWithNoTests -c jest-integration.config.js",
-    "test:staged": "yarn test --findRelatedTests",
-    "test:ci": "yarn test --coverage"
+    "test:staged": "yarn test --findRelatedTests --silent",
+    "test:ci": "yarn test --coverage --silent"
   },
   "devDependencies": {
     "@types/jest": "^26.0.13",
