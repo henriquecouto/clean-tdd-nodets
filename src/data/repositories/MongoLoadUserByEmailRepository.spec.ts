@@ -21,6 +21,11 @@ class MongoLoadUserByEmailRepository implements ILoadUserByEmailRepository {
   }
 }
 
+const makeSut = () => {
+  const sut = new MongoLoadUserByEmailRepository()
+  return { sut }
+}
+
 describe('MongoLoadUserByEmailRepository', () => {
   beforeAll(async () => {
     connection = await MongoClient.connect(process.env.MONGO_URL, {
@@ -35,13 +40,13 @@ describe('MongoLoadUserByEmailRepository', () => {
   })
 
   test('Should return null if no user finded', async () => {
-    const sut = new MongoLoadUserByEmailRepository()
+    const { sut } = makeSut()
     const user = await sut.load('any@email.com')
     expect(user).toBeNull()
   })
 
   test('Should throw if no email is provided', async () => {
-    const sut = new MongoLoadUserByEmailRepository()
+    const { sut } = makeSut()
     const promise = sut.load(null)
     expect(promise).rejects.toThrow(new MissingParamError('email'))
   })
