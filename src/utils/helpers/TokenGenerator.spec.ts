@@ -18,6 +18,11 @@ const makeSut = () => {
 }
 
 describe('TokenGenerator', () => {
+  beforeEach(() => {
+    // @ts-ignore
+    jwt.token = 'any_token'
+  })
+
   test('Should return null if JWT returns null', async () => {
     const { sut } = makeSut()
     // @ts-ignore
@@ -33,5 +38,12 @@ describe('TokenGenerator', () => {
     expect(jwt.payload).toEqual({ id: 'any_id' })
     // @ts-ignore
     expect(jwt.secret).toBe('any_secret')
+  })
+
+  test('Should return token if JWT returns token', async () => {
+    const { sut } = makeSut()
+    const token = await sut.generate('any_id')
+    // @ts-ignore
+    expect(token).toBe(jwt.token)
   })
 })
