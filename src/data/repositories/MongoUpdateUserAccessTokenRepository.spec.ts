@@ -1,16 +1,10 @@
+import MongoUpdateUserAccessTokenRepository from './MongoUpdateUserAccessTokenRepository'
 import { Collection } from 'mongodb'
 import MongoHelper from '../helpers/MongoHelper'
+import MissingParamError from '@/utils/errors/MissingParamError'
 
 const mongoHelper = new MongoHelper(process.env.MONGO_URL)
 let userModel: Collection
-
-class MongoUpdateUserAccessTokenRepository {
-  constructor(private userModel: Collection) {}
-
-  async update(id: string, accessToken: string) {
-    return null
-  }
-}
 
 const makeSut = () => {
   const sut = new MongoUpdateUserAccessTokenRepository(userModel)
@@ -31,5 +25,16 @@ describe('MongoUpdateUserAccessTokenRepository', () => {
     const { sut } = makeSut()
     const user = await sut.update('invalid_id', 'any_access')
     expect(user).toBeNull()
+  })
+
+  test('Should throws if no params are provided', async () => {
+    const { sut } = makeSut()
+    expect(sut.update(null, null)).rejects.toThrow(
+      new MissingParamError('userId')
+    )
+
+    expect(sut.update('any_id', null)).rejects.toThrow(
+      new MissingParamError('accessToken')
+    )
   })
 })
