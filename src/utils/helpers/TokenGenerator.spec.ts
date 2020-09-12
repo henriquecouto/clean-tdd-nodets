@@ -12,9 +12,14 @@ jest.mock('jsonwebtoken', () => ({
   },
 }))
 
+const makeSut = () => {
+  const sut = new TokenGenerator('any_secret')
+  return { sut }
+}
+
 describe('TokenGenerator', () => {
   test('Should return null if JWT returns null', async () => {
-    const sut = new TokenGenerator('any_secret')
+    const { sut } = makeSut()
     // @ts-ignore
     jwt.token = null
     const token = await sut.generate('any_id')
@@ -22,7 +27,7 @@ describe('TokenGenerator', () => {
   })
 
   test('Should call JWT with correct params', async () => {
-    const sut = new TokenGenerator('any_secret')
+    const { sut } = makeSut()
     await sut.generate('any_id')
     // @ts-ignore
     expect(jwt.payload).toEqual({ id: 'any_id' })
