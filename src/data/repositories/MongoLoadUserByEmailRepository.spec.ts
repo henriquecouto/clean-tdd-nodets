@@ -1,9 +1,10 @@
 import MissingParamError from '@/utils/errors/MissingParamError'
 import MongoLoadUserByEmailRepository from './MongoLoadUserByEmailRepository'
 
-import { Collection, MongoClient } from 'mongodb'
+import { Collection } from 'mongodb'
+import MongoHelper from '../helpers/MongoHelper'
 
-let connection: MongoClient
+const mongoHelper = new MongoHelper(process.env.MONGO_URL)
 let userModel: Collection
 
 const makeSut = () => {
@@ -13,15 +14,12 @@ const makeSut = () => {
 
 describe('MongoLoadUserByEmailRepository', () => {
   beforeAll(async () => {
-    connection = await MongoClient.connect(process.env.MONGO_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
-    userModel = await connection.db().collection('users')
+    await mongoHelper.connect()
+    userModel = await mongoHelper.getCollection('users')
   })
 
   afterAll(async () => {
-    await connection.close()
+    await mongoHelper.disconnect()
   })
 
   test('Should return null if no user finded', async () => {
