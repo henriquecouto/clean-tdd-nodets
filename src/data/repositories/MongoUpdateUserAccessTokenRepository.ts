@@ -13,7 +13,11 @@ class MongoUpdateUserAccessTokenRepository {
       throw new MissingParamError('accessToken')
     }
 
-    return null
+    const { result } = await this.userModel.updateOne(
+      { id: userId },
+      { $set: { accessToken } }
+    )
+    return !!result.nModified
   }
 }
 

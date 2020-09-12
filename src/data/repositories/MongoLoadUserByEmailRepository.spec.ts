@@ -19,6 +19,7 @@ describe('MongoLoadUserByEmailRepository', () => {
   })
 
   afterAll(async () => {
+    await userModel.drop()
     await mongoHelper.disconnect()
   })
 
