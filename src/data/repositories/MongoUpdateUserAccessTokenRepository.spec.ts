@@ -47,8 +47,8 @@ describe('MongoUpdateUserAccessTokenRepository', () => {
       id: 'any_id',
     }
     await userModel.insertOne(mockUser)
-    const result = await sut.update('any_id', 'any_accessToken')
-    expect(result).toBeTruthy()
+    await sut.update('any_id', 'any_accessToken')
+    // expect(result).toBeTruthy()
 
     const updatedUser = await userModel.findOne(mockUser)
     expect(updatedUser.accessToken).toBe('any_accessToken')

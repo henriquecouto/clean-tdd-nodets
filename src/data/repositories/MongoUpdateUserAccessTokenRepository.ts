@@ -1,7 +1,9 @@
+import IUpdateUserAccessTokenRepository from '@/domain/definitions/IUpdateUserAccessTokenRepository'
 import MissingParamError from '@/utils/errors/MissingParamError'
 import { Collection } from 'mongodb'
 
-class MongoUpdateUserAccessTokenRepository {
+class MongoUpdateUserAccessTokenRepository
+  implements IUpdateUserAccessTokenRepository {
   constructor(private userModel: Collection) {}
 
   async update(userId: string, accessToken: string) {
@@ -13,11 +15,7 @@ class MongoUpdateUserAccessTokenRepository {
       throw new MissingParamError('accessToken')
     }
 
-    const { result } = await this.userModel.updateOne(
-      { id: userId },
-      { $set: { accessToken } }
-    )
-    return !!result.nModified
+    await this.userModel.updateOne({ id: userId }, { $set: { accessToken } })
   }
 }
 
