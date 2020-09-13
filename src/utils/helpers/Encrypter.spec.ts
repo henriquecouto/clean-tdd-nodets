@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import MissingParamError from '../errors/MissingParamError'
 import Encrypter from './Encrypter'
 
 jest.mock('bcrypt', () => ({
@@ -39,5 +40,15 @@ describe('Encrypter', () => {
     expect(bcrypt.value).toBe('any_value')
     // @ts-ignore
     expect(bcrypt.hashedValue).toBe('any_hash')
+  })
+
+  test('Should throw if no params are provided', () => {
+    const { sut } = makeSut()
+    // @ts-ignore
+    expect(sut.compare()).rejects.toThrow(new MissingParamError('value'))
+    // @ts-ignore
+    expect(sut.compare('any_value')).rejects.toThrow(
+      new MissingParamError('hashedValue')
+    )
   })
 })
