@@ -8,16 +8,21 @@ jest.mock('bcrypt', () => ({
   },
 }))
 
+const makeSut = () => {
+  const sut = new Encrypter()
+  return { sut }
+}
+
 describe('Encrypter', () => {
   test('Should return true if bcrypt returns true', async () => {
-    const sut = new Encrypter()
+    const { sut } = makeSut()
     const isValid = await sut.compare('any_value', 'any_hash')
     // @ts-ignore
     expect(isValid).toBe(bcrypt.isValid)
   })
 
   test('Should return false if bcrypt returns false', async () => {
-    const sut = new Encrypter()
+    const { sut } = makeSut()
     // @ts-ignore
     bcrypt.isValid = false
     const isValid = await sut.compare('any_value', 'any_hash')
