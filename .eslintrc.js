@@ -5,7 +5,7 @@ module.exports = {
     node: true,
     'jest/globals': true,
   },
-  extends: ['standard'],
+  extends: ['standard', 'prettier'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     sourceType: 'module',
