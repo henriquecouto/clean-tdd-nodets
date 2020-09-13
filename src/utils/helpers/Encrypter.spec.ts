@@ -15,4 +15,13 @@ describe('Encrypter', () => {
     // @ts-ignore
     expect(isValid).toBe(bcrypt.isValid)
   })
+
+  test('Should return false if bcrypt returns false', async () => {
+    const sut = new Encrypter()
+    // @ts-ignore
+    bcrypt.isValid = false
+    const isValid = await sut.compare('any_value', 'any_hash')
+    // @ts-ignore
+    expect(isValid).toBe(bcrypt.isValid)
+  })
 })
