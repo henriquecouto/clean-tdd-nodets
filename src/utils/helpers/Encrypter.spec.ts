@@ -4,6 +4,8 @@ import Encrypter from './Encrypter'
 jest.mock('bcrypt', () => ({
   isValid: true,
   async compare(value: string, hashedValue: string) {
+    this.value = value
+    this.hashedValue = hashedValue
     return this.isValid
   },
 }))
@@ -28,5 +30,14 @@ describe('Encrypter', () => {
     const isValid = await sut.compare('any_value', 'any_hash')
     // @ts-ignore
     expect(isValid).toBe(bcrypt.isValid)
+  })
+
+  test('Should call bcrypt with correct values', async () => {
+    const { sut } = makeSut()
+    await sut.compare('any_value', 'any_hash')
+    // @ts-ignore
+    expect(bcrypt.value).toBe('any_value')
+    // @ts-ignore
+    expect(bcrypt.hashedValue).toBe('any_hash')
   })
 })
