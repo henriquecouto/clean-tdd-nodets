@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import MissingParamError from '../errors/MissingParamError'
 import TokenGenerator from './TokenGenerator'
 
 jest.mock('jsonwebtoken', () => ({
@@ -45,5 +46,19 @@ describe('TokenGenerator', () => {
     const token = await sut.generate('any_id')
     // @ts-ignore
     expect(token).toBe(jwt.token)
+  })
+
+  test('Should throw if no secret is provided', async () => {
+    // @ts-ignore
+    const sut = new TokenGenerator()
+    const promise = sut.generate('any_id')
+    expect(promise).rejects.toThrow(new MissingParamError('secret'))
+  })
+
+  test('Should throw if no id is provided', async () => {
+    const { sut } = makeSut()
+    // @ts-ignore
+    const promise = sut.generate()
+    expect(promise).rejects.toThrow(new MissingParamError('id'))
   })
 })
