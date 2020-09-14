@@ -17,10 +17,19 @@ class HttpResponse {
 
 class LoginRouter {
   async route(httpRequest: HttpRequest) {
-    return new HttpResponse({
-      statusCode: 400,
-      body: { error: new Error('Invalid Email').message },
-    })
+    if (!httpRequest.body.email) {
+      return new HttpResponse({
+        statusCode: 400,
+        body: { error: new Error('Invalid Email').message },
+      })
+    }
+
+    if (!httpRequest.body.password) {
+      return new HttpResponse({
+        statusCode: 400,
+        body: { error: new Error('Invalid Password').message },
+      })
+    }
   }
 }
 
@@ -35,5 +44,17 @@ describe('LoginRouter', () => {
     const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body.error).toBe(new Error('Invalid Email').message)
+  })
+
+  test('Should return 400 if no password is provided', async () => {
+    const sut = new LoginRouter()
+    const httpRequest = new HttpRequest({
+      body: {
+        email: 'any@email.com',
+      },
+    })
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body.error).toBe(new Error('Invalid Password').message)
   })
 })
