@@ -65,4 +65,12 @@ describe('LoginRouter', () => {
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body.error).toBe(new ServerError().message)
   })
+
+  test('Should return 500 if an invalid httpRequest is provided', async () => {
+    const { sut } = makeSut()
+    // @ts-ignore
+    const httpResponse = await sut.route({})
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body.error).toBe(new ServerError().message)
+  })
 })
