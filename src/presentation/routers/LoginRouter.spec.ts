@@ -11,10 +11,21 @@ class EmailValidatorSpy {
   }
 }
 
+class AuthUseCaseSpy {
+  email = ''
+  password = ''
+  async auth(email: string, password: string): Promise<string> {
+    this.email = email
+    this.password = password
+    return ''
+  }
+}
+
 const makeSut = () => {
   const emailValidatorSpy = new EmailValidatorSpy()
-  const sut = new LoginRouter(emailValidatorSpy)
-  return { sut, emailValidatorSpy }
+  const authUseCaseSpy = new AuthUseCaseSpy()
+  const sut = new LoginRouter(emailValidatorSpy, authUseCaseSpy)
+  return { sut, emailValidatorSpy, authUseCaseSpy }
 }
 
 describe('LoginRouter', () => {
@@ -72,5 +83,18 @@ describe('LoginRouter', () => {
     const httpResponse = await sut.route({})
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body.error).toBe(new ServerError().message)
+  })
+
+  test('Should call AuthUseCase with correct params', async () => {
+    const { sut, authUseCaseSpy } = makeSut()
+    const httpRequest = new HttpRequest({
+      body: {
+        email: 'valid@email.com',
+        password: 'any_password',
+      },
+    })
+    await sut.route(httpRequest)
+    expect(authUseCaseSpy.email).toBe(httpRequest.body.email)
+    expect(authUseCaseSpy.password).toBe(httpRequest.body.password)
   })
 })

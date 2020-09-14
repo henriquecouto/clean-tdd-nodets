@@ -6,8 +6,16 @@ import { MakeHttpResponse } from '../helpers/HttpResponse'
 interface IEmailValidator {
   isValid: (email: string) => boolean
 }
+
+interface IAuthUseCase {
+  auth: (email: string, password: string) => Promise<string>
+}
 class LoginRouter {
-  constructor(private emailValidator: IEmailValidator) {}
+  constructor(
+    private emailValidator: IEmailValidator,
+    private authUseCase: IAuthUseCase
+  ) {}
+
   async route(httpRequest: HttpRequest) {
     try {
       if (!httpRequest.body.email) {
@@ -21,6 +29,8 @@ class LoginRouter {
       if (!this.emailValidator.isValid(httpRequest.body.email)) {
         return MakeHttpResponse.badRequest(new InvalidParamError('email'))
       }
+
+      this.authUseCase.auth(httpRequest.body.email, httpRequest.body.password)
     } catch (error) {
       return MakeHttpResponse.serverError()
     }
