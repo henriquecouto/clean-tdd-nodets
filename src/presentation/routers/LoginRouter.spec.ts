@@ -1,10 +1,19 @@
+import InvalidParamError from '@/utils/errors/InvalidParamError'
 import MissingParamError from '@/utils/errors/MissingParamError'
 import HttpRequest from '../helpers/HttpRequest'
 import LoginRouter from './LoginRouter'
 
+class EmailValidatorSpy {
+  isEmailValid = true
+  isValid(email: string): boolean {
+    return this.isEmailValid
+  }
+}
+
 const makeSut = () => {
-  const sut = new LoginRouter()
-  return { sut }
+  const emailValidatorSpy = new EmailValidatorSpy()
+  const sut = new LoginRouter(emailValidatorSpy)
+  return { sut, emailValidatorSpy }
 }
 
 describe('LoginRouter', () => {
@@ -32,5 +41,19 @@ describe('LoginRouter', () => {
     expect(httpResponse.body.error).toBe(
       new MissingParamError('password').message
     )
+  })
+
+  test('Should return 400 if an invalid email is provided', async () => {
+    const { sut, emailValidatorSpy } = makeSut()
+    const httpRequest = new HttpRequest({
+      body: {
+        email: 'invalid@email.com',
+        password: 'any_password',
+      },
+    })
+    emailValidatorSpy.isEmailValid = false
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body.error).toBe(new InvalidParamError('email').message)
   })
 })
