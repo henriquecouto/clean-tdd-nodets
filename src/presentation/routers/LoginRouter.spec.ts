@@ -1,19 +1,5 @@
-class HttpRequest {
-  public body: any
-
-  constructor(props) {
-    Object.assign(this, props)
-  }
-}
-
-class HttpResponse {
-  public statusCode: number
-  public body: any
-
-  constructor(props) {
-    Object.assign(this, props)
-  }
-}
+import HttpRequest from '../helpers/HttpRequest'
+import HttpResponse from '../helpers/HttpResponse'
 
 class LoginRouter {
   async route(httpRequest: HttpRequest) {
