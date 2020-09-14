@@ -1,5 +1,6 @@
 import InvalidParamError from '@/utils/errors/InvalidParamError'
 import MissingParamError from '@/utils/errors/MissingParamError'
+import ServerError from '../errors/ServerError'
 import HttpRequest from '../helpers/HttpRequest'
 import LoginRouter from './LoginRouter'
 
@@ -55,5 +56,13 @@ describe('LoginRouter', () => {
     const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body.error).toBe(new InvalidParamError('email').message)
+  })
+
+  test('Should return 500 if no httpRequest is provided', async () => {
+    const { sut } = makeSut()
+    // @ts-ignore
+    const httpResponse = await sut.route()
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body.error).toBe(new ServerError().message)
   })
 })

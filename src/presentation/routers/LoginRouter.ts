@@ -9,6 +9,10 @@ interface IEmailValidator {
 class LoginRouter {
   constructor(private emailValidator: IEmailValidator) {}
   async route(httpRequest: HttpRequest) {
+    if (!httpRequest) {
+      return MakeHttpResponse.serverError()
+    }
+
     if (!httpRequest.body.email) {
       return MakeHttpResponse.badRequest(new MissingParamError('email'))
     }
