@@ -1,6 +1,7 @@
 import InvalidParamError from '@/utils/errors/InvalidParamError'
 import MissingParamError from '@/utils/errors/MissingParamError'
 import ServerError from '../errors/ServerError'
+import UnauthorizedError from '../errors/UnauthorizedError'
 import HttpRequest from '../helpers/HttpRequest'
 import LoginRouter from './LoginRouter'
 
@@ -14,10 +15,11 @@ class EmailValidatorSpy {
 class AuthUseCaseSpy {
   email = ''
   password = ''
+  accessToken = 'any_accessToken'
   async auth(email: string, password: string): Promise<string> {
     this.email = email
     this.password = password
-    return ''
+    return this.accessToken
   }
 }
 
@@ -96,5 +98,32 @@ describe('LoginRouter', () => {
     await sut.route(httpRequest)
     expect(authUseCaseSpy.email).toBe(httpRequest.body.email)
     expect(authUseCaseSpy.password).toBe(httpRequest.body.password)
+  })
+
+  test('Should return 401 if invalid credentials are provided', async () => {
+    const { sut, authUseCaseSpy } = makeSut()
+    const httpRequest = new HttpRequest({
+      body: {
+        email: 'invalid@email.com',
+        password: 'invalid_password',
+      },
+    })
+    authUseCaseSpy.accessToken = null
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(401)
+    expect(httpResponse.body.error).toBe(new UnauthorizedError().message)
+  })
+
+  test('Should return 200 if valid credentials are provided', async () => {
+    const { sut, authUseCaseSpy } = makeSut()
+    const httpRequest = new HttpRequest({
+      body: {
+        email: 'valid@email.com',
+        password: 'valid_password',
+      },
+    })
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(200)
+    expect(httpResponse.body.accessToken).toBe(authUseCaseSpy.accessToken)
   })
 })

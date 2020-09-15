@@ -30,7 +30,16 @@ class LoginRouter {
         return MakeHttpResponse.badRequest(new InvalidParamError('email'))
       }
 
-      this.authUseCase.auth(httpRequest.body.email, httpRequest.body.password)
+      const accessToken = await this.authUseCase.auth(
+        httpRequest.body.email,
+        httpRequest.body.password
+      )
+
+      if (!accessToken) {
+        return MakeHttpResponse.unauthorizedError()
+      }
+
+      return MakeHttpResponse.success({ accessToken })
     } catch (error) {
       return MakeHttpResponse.serverError()
     }

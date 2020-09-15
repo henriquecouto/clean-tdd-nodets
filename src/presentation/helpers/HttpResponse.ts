@@ -1,4 +1,5 @@
 import ServerError from '../errors/ServerError'
+import UnauthorizedError from '../errors/UnauthorizedError'
 
 class HttpResponse {
   public statusCode: number
@@ -18,6 +19,20 @@ export class MakeHttpResponse {
     return new HttpResponse({
       statusCode: 500,
       body: { error: new ServerError().message },
+    })
+  }
+
+  static unauthorizedError() {
+    return new HttpResponse({
+      statusCode: 401,
+      body: { error: new UnauthorizedError().message },
+    })
+  }
+
+  static success(response) {
+    return new HttpResponse({
+      statusCode: 200,
+      body: response,
     })
   }
 }
