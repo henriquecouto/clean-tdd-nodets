@@ -3,8 +3,9 @@ import ILoadUserByEmailRepository from '../definitions/ILoadUserByEmailRepositor
 import IUpdateUserAccessTokenRepository from '../definitions/IUpdateUserAccessTokenRepository'
 import IEncrypter from '../definitions/IEncrypter'
 import ITokenGenerator from '../definitions/ITokenGenerator'
+import IAuthUseCase from '../definitions/IAuthUseCase'
 
-class AuthUseCase {
+class AuthUseCase implements IAuthUseCase {
   constructor(
     private loadUserByEmailRepository: ILoadUserByEmailRepository,
     private updateUserAccessTokenRepository: IUpdateUserAccessTokenRepository,
