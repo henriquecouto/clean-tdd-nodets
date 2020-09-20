@@ -7,7 +7,9 @@ import LoginRouter from './LoginRouter'
 
 class EmailValidatorSpy {
   isEmailValid = true
+  email = ''
   isValid(email: string): boolean {
+    this.email = email
     return this.isEmailValid
   }
 }
@@ -125,5 +127,17 @@ describe('LoginRouter', () => {
     const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(200)
     expect(httpResponse.body.accessToken).toBe(authUseCaseSpy.accessToken)
+  })
+
+  test('Should call EmailValidator with correct param', async () => {
+    const { sut, emailValidatorSpy } = makeSut()
+    const httpRequest = new HttpRequest({
+      body: {
+        email: 'valid@email.com',
+        password: 'valid_password',
+      },
+    })
+    await sut.route(httpRequest)
+    expect(emailValidatorSpy.email).toBe(httpRequest.body.email)
   })
 })
