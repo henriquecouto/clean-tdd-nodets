@@ -1,7 +1,7 @@
 import MissingParamError from '@/utils/errors/MissingParamError'
 import ILoadUserByEmailRepository from '../definitions/ILoadUserByEmailRepository'
 import IUpdateUserAccessTokenRepository from '../definitions/IUpdateUserAccessTokenRepository'
-import IEncrypter from '../definitions/IEncrypter'
+import IHashVerifier from '../definitions/IHashVerifier'
 import ITokenGenerator from '../definitions/ITokenGenerator'
 import IAuthUseCase from '../definitions/IAuthUseCase'
 
@@ -9,7 +9,7 @@ class AuthUseCase implements IAuthUseCase {
   constructor(
     private loadUserByEmailRepository: ILoadUserByEmailRepository,
     private updateUserAccessTokenRepository: IUpdateUserAccessTokenRepository,
-    private encrypter: IEncrypter,
+    private hashVerifier: IHashVerifier,
     private tokenGenerator: ITokenGenerator
   ) {}
 
@@ -23,7 +23,7 @@ class AuthUseCase implements IAuthUseCase {
 
     const user = await this.loadUserByEmailRepository.load(email)
     const isValid =
-      user && (await this.encrypter.compare(password, user.password))
+      user && (await this.hashVerifier.compare(password, user.password))
 
     if (!isValid) {
       return null

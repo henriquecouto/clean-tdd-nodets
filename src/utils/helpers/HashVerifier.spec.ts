@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import MissingParamError from '../errors/MissingParamError'
-import Encrypter from './Encrypter'
+import HashVerifier from './HashVerifier'
 
 jest.mock('bcrypt', () => ({
   isValid: true,
@@ -12,11 +12,11 @@ jest.mock('bcrypt', () => ({
 }))
 
 const makeSut = () => {
-  const sut = new Encrypter()
+  const sut = new HashVerifier()
   return { sut }
 }
 
-describe('Encrypter', () => {
+describe('HashVerifier', () => {
   test('Should return true if bcrypt returns true', async () => {
     const { sut } = makeSut()
     const isValid = await sut.compare('any_value', 'any_hash')
