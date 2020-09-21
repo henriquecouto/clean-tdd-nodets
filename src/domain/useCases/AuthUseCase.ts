@@ -1,8 +1,8 @@
 import MissingParamError from '@/utils/errors/MissingParamError'
-import ILoadUserByEmailRepository from '../definitions/ILoadUserByEmailRepository'
-import IUpdateUserAccessTokenRepository from '../definitions/IUpdateUserAccessTokenRepository'
-import IHashVerifier from '../definitions/IHashVerifier'
-import ITokenGenerator from '../definitions/ITokenGenerator'
+import ILoadUserByEmailRepository from '../../data/repositories/definitions/ILoadUserByEmailRepository'
+import IUpdateUserAccessTokenRepository from '../../data/repositories/definitions/IUpdateUserAccessTokenRepository'
+import IHashVerifier from '../../utils/helpers/definitions/IHashVerifier'
+import ITokenGenerator from '../../utils/helpers/definitions/ITokenGenerator'
 import IAuthUseCase from './definitions/IAuthUseCase'
 
 class AuthUseCase implements IAuthUseCase {

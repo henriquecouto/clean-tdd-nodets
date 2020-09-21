@@ -1,4 +1,4 @@
-import ILoadUserByEmailRepository from '@/domain/definitions/ILoadUserByEmailRepository'
+import ILoadUserByEmailRepository from '@/data/repositories/definitions/ILoadUserByEmailRepository'
 import User from '@/domain/entities/User'
 import MissingParamError from '@/utils/errors/MissingParamError'
 

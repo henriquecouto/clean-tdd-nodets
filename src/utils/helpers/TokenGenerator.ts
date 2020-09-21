@@ -1,4 +1,4 @@
-import ITokenGenerator from '@/domain/definitions/ITokenGenerator'
+import ITokenGenerator from '@/utils/helpers/definitions/ITokenGenerator'
 import jwt from 'jsonwebtoken'
 import MissingParamError from '../errors/MissingParamError'
 

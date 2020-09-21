@@ -1,4 +1,4 @@
-import IHashVerifier from '@/domain/definitions/IHashVerifier'
+import IHashVerifier from '@/utils/helpers/definitions/IHashVerifier'
 import bcrypt from 'bcrypt'
 import MissingParamError from '../errors/MissingParamError'
 

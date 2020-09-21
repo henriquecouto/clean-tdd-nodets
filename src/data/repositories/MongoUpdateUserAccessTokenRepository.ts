@@ -1,4 +1,4 @@
-import IUpdateUserAccessTokenRepository from '@/domain/definitions/IUpdateUserAccessTokenRepository'
+import IUpdateUserAccessTokenRepository from '@/data/repositories/definitions/IUpdateUserAccessTokenRepository'
 import MissingParamError from '@/utils/errors/MissingParamError'
 import { Collection } from 'mongodb'
 
