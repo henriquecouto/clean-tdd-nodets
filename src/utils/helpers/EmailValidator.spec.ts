@@ -3,7 +3,8 @@ import EmailValidator from './EmailValidator'
 
 jest.mock('validator', () => ({
   isEmailValid: true,
-  isEmail() {
+  isEmail(email: string) {
+    this.email = email
     return this.isEmailValid
   },
 }))
@@ -28,5 +29,12 @@ describe('EmailValidator', () => {
     const isValid = sut.isValid('any@email.com')
     // @ts-ignore
     expect(isValid).toBe(validator.isEmailValid)
+  })
+
+  test('Should calls validator with correct email', () => {
+    const { sut } = makeSut()
+    sut.isValid('any@email.com')
+    // @ts-ignore
+    expect(validator.email).toBe('any@email.com')
   })
 })
