@@ -1,4 +1,4 @@
-import IAuthUseCase from '@/domain/definitions/IAuthUseCase'
+import IAuthUseCase from '@/domain/useCases/definitions/IAuthUseCase'
 import InvalidParamError from '@/utils/errors/InvalidParamError'
 import MissingParamError from '@/utils/errors/MissingParamError'
 import HttpRequest from '../helpers/HttpRequest'

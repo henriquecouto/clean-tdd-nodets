@@ -3,7 +3,7 @@ import ILoadUserByEmailRepository from '../definitions/ILoadUserByEmailRepositor
 import IUpdateUserAccessTokenRepository from '../definitions/IUpdateUserAccessTokenRepository'
 import IHashVerifier from '../definitions/IHashVerifier'
 import ITokenGenerator from '../definitions/ITokenGenerator'
-import IAuthUseCase from '../definitions/IAuthUseCase'
+import IAuthUseCase from './definitions/IAuthUseCase'
 
 class AuthUseCase implements IAuthUseCase {
   constructor(
