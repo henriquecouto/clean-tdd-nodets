@@ -1,9 +1,9 @@
 import validator from 'validator'
 
 jest.mock('validator', () => ({
-  isValid: true,
+  isEmailValid: true,
   isEmail() {
-    return this.isValid
+    return this.isEmailValid
   },
 }))
 
@@ -18,6 +18,15 @@ describe('EmailValidator', () => {
     const sut = new EmailValidator()
     const isValid = await sut.verify('any@email.com')
     // @ts-ignore
-    expect(isValid).toBe(validator.isValid)
+    expect(isValid).toBe(validator.isEmailValid)
+  })
+
+  test('Should return false if validator returns false', async () => {
+    const sut = new EmailValidator()
+    // @ts-ignore
+    validator.isEmailValid = false
+    const isValid = await sut.verify('any@email.com')
+    // @ts-ignore
+    expect(isValid).toBe(validator.isEmailValid)
   })
 })
