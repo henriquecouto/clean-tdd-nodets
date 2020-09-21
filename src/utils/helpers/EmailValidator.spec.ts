@@ -1,4 +1,5 @@
 import validator from 'validator'
+import EmailValidator from './EmailValidator'
 
 jest.mock('validator', () => ({
   isEmailValid: true,
@@ -6,12 +7,6 @@ jest.mock('validator', () => ({
     return this.isEmailValid
   },
 }))
-
-class EmailValidator {
-  async verify(email: string): Promise<boolean> {
-    return validator.isEmail(email)
-  }
-}
 
 describe('EmailValidator', () => {
   test('Should return true if validator returns true', async () => {
