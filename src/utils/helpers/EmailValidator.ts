@@ -1,7 +1,8 @@
 import validator from 'validator'
+import IEmailValidator from './definitions/IEmailValidator'
 
-class EmailValidator {
-  async verify(email: string): Promise<boolean> {
+class EmailValidator implements IEmailValidator {
+  isValid(email: string): boolean {
     return validator.isEmail(email)
   }
 }

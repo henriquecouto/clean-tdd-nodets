@@ -1,12 +1,9 @@
 import IAuthUseCase from '@/domain/useCases/definitions/IAuthUseCase'
 import InvalidParamError from '@/utils/errors/InvalidParamError'
 import MissingParamError from '@/utils/errors/MissingParamError'
+import IEmailValidator from '@/utils/helpers/definitions/IEmailValidator'
 import HttpRequest from '../helpers/HttpRequest'
 import { MakeHttpResponse } from '../helpers/HttpResponse'
-
-interface IEmailValidator {
-  isValid: (email: string) => boolean
-}
 
 class LoginRouter {
   constructor(

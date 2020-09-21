@@ -9,18 +9,18 @@ jest.mock('validator', () => ({
 }))
 
 describe('EmailValidator', () => {
-  test('Should return true if validator returns true', async () => {
+  test('Should return true if validator returns true', () => {
     const sut = new EmailValidator()
-    const isValid = await sut.verify('any@email.com')
+    const isValid = sut.isValid('any@email.com')
     // @ts-ignore
     expect(isValid).toBe(validator.isEmailValid)
   })
 
-  test('Should return false if validator returns false', async () => {
+  test('Should return false if validator returns false', () => {
     const sut = new EmailValidator()
     // @ts-ignore
     validator.isEmailValid = false
-    const isValid = await sut.verify('any@email.com')
+    const isValid = sut.isValid('any@email.com')
     // @ts-ignore
     expect(isValid).toBe(validator.isEmailValid)
   })
