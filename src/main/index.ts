@@ -1,7 +1,4 @@
-import express from 'express'
+import app from './config/app'
+import mongo from './config/mongo'
 
-const app = express()
-
-app.listen(3000, () => {
-  console.log('🏴 App running!')
-})
+mongo(app)
