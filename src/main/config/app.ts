@@ -1,9 +1,8 @@
 import express from 'express'
-import env from './env'
+import setupApp from './setup'
 
 const app = express()
 
-export default () =>
-  app.listen(env.port, () => {
-    console.log('🏴 App running!')
-  })
+setupApp(app)
+
+export default app
