@@ -1,6 +1,7 @@
 import MongoHelper from '@/data/helpers/MongoHelper'
+import env from './env'
 
-const mongo = new MongoHelper('mongodb://localhost:27017/clean-tdd-nodets')
+const mongo = new MongoHelper(env.mongoUrl)
 
 export default (callback) => {
   mongo.connect().then(callback)
