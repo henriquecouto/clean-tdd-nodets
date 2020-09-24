@@ -7,7 +7,7 @@ const mongoHelper = MongoHelper.getInstance()
 let userModel: Collection
 
 const makeSut = () => {
-  const sut = new MongoUpdateUserAccessTokenRepository(userModel)
+  const sut = new MongoUpdateUserAccessTokenRepository()
   return { sut }
 }
 

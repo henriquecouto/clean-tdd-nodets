@@ -8,7 +8,7 @@ const mongoHelper = MongoHelper.getInstance()
 let userModel: Collection
 
 const makeSut = () => {
-  const sut = new MongoLoadUserByEmailRepository(userModel)
+  const sut = new MongoLoadUserByEmailRepository()
   return { sut }
 }
 
