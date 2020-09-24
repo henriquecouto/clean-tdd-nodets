@@ -1,7 +1,6 @@
 import MongoHelper from '@/data/helpers/MongoHelper'
-import env from './env'
 
-const mongo = new MongoHelper(env.mongoUrl)
+const mongo = MongoHelper.getInstance()
 
 export default (callback) => {
   mongo.connect().then(callback)
