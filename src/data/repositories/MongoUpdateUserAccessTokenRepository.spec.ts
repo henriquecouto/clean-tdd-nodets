@@ -3,7 +3,7 @@ import { Collection } from 'mongodb'
 import MongoHelper from '../helpers/MongoHelper'
 import MissingParamError from '@/utils/errors/MissingParamError'
 
-const mongoHelper = new MongoHelper(process.env.MONGO_URL)
+const mongoHelper = MongoHelper.getInstance()
 let userModel: Collection
 
 const makeSut = () => {

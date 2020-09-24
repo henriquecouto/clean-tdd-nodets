@@ -4,7 +4,7 @@ import MongoLoadUserByEmailRepository from './MongoLoadUserByEmailRepository'
 import { Collection } from 'mongodb'
 import MongoHelper from '../helpers/MongoHelper'
 
-const mongoHelper = new MongoHelper(process.env.MONGO_URL)
+const mongoHelper = MongoHelper.getInstance()
 let userModel: Collection
 
 const makeSut = () => {

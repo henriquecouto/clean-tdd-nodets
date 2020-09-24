@@ -1,7 +1,7 @@
 import MongoHelper from './MongoHelper'
 
 describe('MongoHelper', () => {
-  const sut = new MongoHelper(process.env.MONGO_URL)
+  const sut = MongoHelper.getInstance()
 
   beforeAll(async () => {
     await sut.connect()
